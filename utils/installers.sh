@@ -18,5 +18,6 @@ install_rvm(){
   gpg --keyserver hkp://keys.gnupg.net --recv-keys 409B6B1796C275462A1703113804BB82D39DC0E3
   curl -L https://get.rvm.io | bash -s stable --auto-dotfiles --autolibs=enable --rails
   usermod -a -G rvm `whoami`
-  source /usr/local/rvm/scripts/rvm
+  # source /usr/local/rvm/scripts/rvm
+  source /Users/`whoami`/.rvm/scripts/rvm
 }
