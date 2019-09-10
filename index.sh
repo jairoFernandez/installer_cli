@@ -2,6 +2,11 @@
 
 actual_dir="$(dirname "$0")"
 ruby_version="2.6.1"
+aliases='
+  alias pg_start="launchctl load ~/Library/LaunchAgents/homebrew.mxcl.postgresql.plist"
+  alias pg_stop="launchctl unload ~/Library/LaunchAgents/homebrew.mxcl.postgresql.plist"
+  alias rabbit_start="rabbitmq-server"
+'
 
 source "$actual_dir/utils/color.sh"
 source "$actual_dir/utils/installers.sh"
@@ -14,10 +19,10 @@ Assistance of installations for devs
 echo -e $Color_Off ""
 
 well_done() {
-  echo -e $Yellow "
-  Well done!!!
-  "
-  echo -e $Color_Off ""
+echo -e $Yellow "
+Well done!!!
+"
+echo -e $Color_Off ""
 }
 
 PS3='
@@ -28,50 +33,57 @@ or press 6 for Quit or ctrl + c:
 ________________________________
 '
 
-options=("Install homebrew" "Install nvm" "Install nodejs" "Install RVM" "Install ruby" "Install git"  "Quit")
+options=("Install homebrew" "Install nvm" "Install Postgres" "Install Rabbitmq" "Install redis" "Install nodejs" "Install RVM" "Install ruby" "Install git"  "Quit")
 
 select opt in "${options[@]}"
 do
-    case $opt in
-        "Install homebrew")
-            echo "Installing homebrew"
-            /usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
-            well_done
-            ;;
-        "Install nvm")
-            echo "Installing NVM"
-            brew install nvm
-            echo '
-                Please copy this into ~/.bash_profile
-                export NVM_DIR="$HOME/.nvm"
-                [ -s "/usr/local/opt/nvm/nvm.sh" ] && . "/usr/local/opt/nvm/nvm.sh"  # This loads nvm
-                [ -s "/usr/local/opt/nvm/etc/bash_completion" ] && . "/usr/local/opt/nvm/etc/bash_completion"
-            '
-            well_done
-            ;;
-        "Install nodejs")
-            echo "Installing nodejs"
-            well_done
-            ;;
-        "Install RVM")
-            echo "You chose install RVM"
-            install_rvm
-            well_done
-            ;;
-        "Install ruby")
-            echo "You chose install Ruby"
-            rvm install $ruby_version
-            rvm use $ruby_version
-            well_done
-            ;;
-        "Install git")
-            echo "you chose choice $REPLY which is $opt"
-            well_done
-            ;;
-        "Quit")
-            break
-            well_done
-            ;;
-        *) echo "invalid option $REPLY";;
-    esac
+  case $opt in
+      "Install homebrew")
+          echo "Installing homebrew"
+          install_brew
+          well_done
+          ;;
+      "Install nvm")
+          echo "Installing NVM"
+          install_nvm
+          well_done
+          ;;
+      "Install nodejs")
+          echo "Installing nodejs"
+          well_done
+          ;;
+      "Install RVM")
+          echo "You choose install RVM"
+          install_rvm
+          well_done
+          ;;
+       "Install Postgres")
+          echo "You choose install Postgres"
+          install_postgres
+          well_done
+          ;;
+       "Install Rabbitmq")
+          echo "You choose install rabbitmq"
+          install_rabbitmq
+          well_done
+          ;;
+      "Install ruby")
+          echo "You choose install Ruby"
+          rvm install $ruby_version
+          rvm use $ruby_version
+          well_done
+          ;;
+      "Install git")
+          echo "you choose choice $REPLY which is $opt"
+          well_done
+          ;;
+      "Install redis")
+          install_redis
+          ;;
+      "Quit")
+          break
+          well_done
+          ;;
+      *) echo "invalid option $REPLY";;
+  esac
 done
